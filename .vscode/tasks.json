@@ -1,0 +1,17 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Startup Script",
+      "type": "shell",
+      "command": "${workspaceFolder}/.vscode/tasks/on_workspace_init.sh",
+      "problemMatcher": [],
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "presentation": {
+        "close": true
+      }
+    }
+  ]
+}

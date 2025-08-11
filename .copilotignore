@@ -1,0 +1,64 @@
+# Claude Code / GitHub Copilot Ignore File
+# This file prevents sensitive files from being sent to external AI services
+
+# Environment files - Contains API keys and secrets
+.env
+**/.env
+.env.*
+**/.env.*
+
+# Allow .env.example files (these contain no sensitive data)
+!.env.example
+!**/.env.example
+
+# Archive directory - May contain historical sensitive data
+.archive/
+.archive/**
+
+# Private keys and certificates
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Wallet and blockchain sensitive files
+wallet.json
+keystore/
+keystore/**
+private_keys/
+private_keys/**
+secrets.toml
+secrets.json
+
+# Blockchain configuration files
+rpc_config.json
+addresses.json
+transactions.json
+mainnet.json
+testnet.json
+**/mainnet.json
+**/testnet.json
+
+# Database files that may contain sensitive data
+*.db
+*.sqlite
+*.sqlite3
+
+# Log files that may contain sensitive information
+*.log
+logs/
+logs/**
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# IDE and editor files that may contain sensitive data
+.vscode/settings.json
+.idea/
+.idea/**
+
+# OS generated files
+.DS_Store
+Thumbs.db
