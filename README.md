@@ -31,7 +31,7 @@ import 'scripts/dotfile.just'
 
 # 変数定義
 config_repo := "https://github.com/tanusuke11/dotfile-ai-agent.git"
-config_prefix := "/path/to/your/.dotfile-ai-agent"
+config_prefix := "/home/ubuntu/projects/.dotfile-ai-agent"
 config_remote := "dotfile-origin"
 
 # 管理対象ファイル・ディレクトリ
@@ -40,6 +40,7 @@ config_files := ".claude .gemini .github .vscode .aiexclude .copilotignore"
 # 初回セットアップ（共有ディレクトリのクローン）
 dotfile-init:
     #!/usr/bin/env bash
+    current_project_root=$(pwd)
     echo "Setting up AI agent configuration..."
     mkdir -p "$(dirname {{config_prefix}})"
     if [ ! -d "{{config_prefix}}" ]; then
@@ -49,6 +50,7 @@ dotfile-init:
         echo "Configuration directory already exists, pulling latest changes..."
         cd {{config_prefix}} && git pull origin main
     fi
+    cd "$current_project_root"
     echo "Creating symbolic links..."
     just _create-symlinks
     echo "Setup complete!"
@@ -127,6 +129,11 @@ dotfile-clean:
     done
     echo "Symbolic links removed!"
 
+# 設定ディレクトリをVS Codeで開く
+dotfile-code:
+    #!/usr/bin/env bash
+    echo "Opening config directory in VS Code..."
+    code {{config_prefix}}
 ```
 
 ### 2. 初回セットアップ
