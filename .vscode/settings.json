@@ -1,11 +1,15 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
+  "editor.tabSize": 2,
   "[justfile]": {
     "editor.formatOnSave": false
   },
   "[markdown]": {
     "editor.formatOnSave": false
+  },
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
   },
   "files.exclude": {
     "node_modules": false,
@@ -20,8 +24,5 @@
     "**/.env": true,
     "**/*.key": true,
     "**/*.pem": true
-  },
-  "[astro]": {
-    "editor.defaultFormatter": "astro-build.astro-vscode"
   }
 }
