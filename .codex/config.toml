@@ -1,0 +1,61 @@
+approval_policy = "on-request"
+sandbox_mode    = "workspace-write"
+
+[profiles.auto]
+approval_policy = "on-request"
+sandbox_mode    = "workspace-write"
+
+[profiles.readonly]
+approval_policy = "never"
+sandbox_mode    = "read-only"
+
+[paths]
+# Common paths to exclude from search and change proposals
+exclude = [
+  "**/.git/**",
+  "**/.idea/**",
+  "**/.vscode/**",
+  "**/.DS_Store",
+  "**/.env",
+  "**/.env.*",
+  "**/node_modules/**",
+  "**/dist/**",
+  "**/build/**",
+  "**/.next/**",
+  "**/.turbo/**",
+  "**/.cache/**",
+  "**/.vercel/**",
+  "**/.wrangler/**",
+  "**/coverage/**",
+  "**/target/**",
+  "**/.venv/**",
+  "**/venv/**",
+  "**/__pycache__/**",
+  "**/.pytest_cache/**",
+  "**/.ruff_cache/**",
+  "**/.terraform/**",
+  "**/vendor/**",
+]
+
+# Repository-wide generic commands
+[commands]
+
+# Fallbacks for common toolchains (tried left to right)
+build   = { cmd = "just build || npm run build || pnpm -s build || yarn build || cargo build --all --locked || go build ./... || make build", workdir = ".", description = "Build the project" }
+test    = { cmd = "just test || npm test || pnpm -s test || yarn test || cargo test --all --locked || go test ./... || pytest -q || make test", workdir = ".", description = "Run tests" }
+dev     = { cmd = "just dev || npm run dev || pnpm -s dev || yarn dev", workdir = ".", description = "Start development server" }
+lint    = { cmd = "just lint || npm run lint || pnpm -s lint || yarn lint || cargo clippy --all-targets -- -D warnings || ruff check . || golangci-lint run || make lint", workdir = ".", description = "Run linters" }
+format  = { cmd = "just fmt || npm run format || pnpm -s format || yarn format || npx -y prettier -w . || cargo fmt --all || ruff format . || black . || gofmt -w . || make format", workdir = ".", description = "Format code" }
+clean   = { cmd = "just clean || npm run clean || pnpm -s clean || yarn clean || cargo clean || make clean", workdir = ".", description = "Clean build artifacts" }
+install = { cmd = "npm ci || pnpm i --frozen-lockfile || yarn install --frozen-lockfile || bun i --frozen-lockfile || make install", workdir = ".", description = "Install dependencies" }
+
+[format]
+# Representative formatters per language (optional)
+rust = { cmd = "cargo fmt --all", workdir = "." }
+ts   = { cmd = "npx -y prettier -w .", workdir = "." }
+py   = { cmd = "ruff format . || black .", workdir = "." }
+
+[lint]
+rust = { cmd = "cargo clippy --all-targets -- -D warnings", workdir = "." }
+ts   = { cmd = "eslint .", workdir = "." }
+py   = { cmd = "ruff check .", workdir = "." }
