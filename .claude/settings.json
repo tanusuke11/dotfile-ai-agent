@@ -1,7 +1,7 @@
 {
-  "model": "sonnet",
   "permissions": {
     "allow": [
+      "WebFetch(domain:docs.anthropic.com)",
       "Bash(bun *)",
       "Bash(cargo *)",
       "Bash(cargo run:*)",
@@ -21,7 +21,8 @@
       "Bash(git log *)",
       "Bash(git push origin *)",
       "Bash(git status)",
-      "Bash(grep *)",
+      "Bash(grep:*)",
+      "Bash(sed:*)",
       "Bash(ls *)",
       "Bash(ls:*)",
       "Bash(mkdir *)",
@@ -63,7 +64,10 @@
       "mcp__serena__think_about_whether_you_are_done",
       "mcp__serena__write_memory",
       "mcp__serena__onboarding",
-      "mcp__serena__check_onboarding_performed"
+      "mcp__serena__check_onboarding_performed",
+      "mcp__serena__execute_shell_command",
+      "mcp__serena__activate_project",
+      "mcp__serena__read_file"
     ],
     "deny": [
       "Bash(chown *)",
@@ -97,27 +101,28 @@
       "Write(secrets/**)"
     ]
   },
+  "model": "sonnet",
   "hooks": {
     "SessionStart": [
       {
-        "matcher": "Bash",
+        "matcher": ".*",
         "hooks": [
           {
             "type": "command",
-            "command": "${PWD}/.claude/hooks/on_session_start.sh \"$CLAUDE_TOOL_OUTPUT\" \"$CLAUDE_FILE_PATHS\"",
+            "command": ".claude/hooks/on_session_start.sh",
             "timeout": 30
           }
         ]
       }
     ],
-    "PostToolUse": [
+    "UserPromptSubmit": [
       {
-        "matcher": "Bash",
+        "matcher": ".*",
         "hooks": [
           {
             "type": "command",
-            "command": "${PWD}/.claude/hooks/on_test_failure.sh \"$CLAUDE_TOOL_OUTPUT\" \"$CLAUDE_FILE_PATHS\"",
-            "timeout": 30
+            "command": ".claude/hooks/on_prompt_submit.sh \"{{prompt}}\"",
+            "timeout": 45
           }
         ]
       }

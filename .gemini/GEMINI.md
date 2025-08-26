@@ -1,25 +1,22 @@
 # Top-Level Rules
-- Run independent processes concurrently when possible
 - **Think internally in English;** all assistant responses (to user) are in Japanese (system constraint)
-- Minimize hard-coded values
+- Use Serena MCP for all code/project operations
 
 # Workflow
-1. Define objective & keyword clusters (≤3 words each)
-2. Run 2–4 targeted Gemini searches
-3. Distill facts, remove noise/marketing
-4. Store durable insights in Serena Memory
-5. Apply & verify changes
 
-# Quality & Persistence
-**Store if:** High re-explanation cost, architecture decisions, numeric rationale  
-**Skip if:** Logs, large dumps, easily reproducible info
+## As `agent` role
 
-**Sources:** Trusted domains, multi-source corroboration, verified dates
+- Purpose: Project-level actor that understands repository structure, creates designs, implements code changes via Serena MCP, runs tests, and persists essential decisions.
+- Responsibilities:
+	- Analyze project structure and propose design/implementation plans.
+	- Implement low-to-medium risk changes when explicitly authorized.
+	- Run or produce tests and validate results.
+	- Persist architecture-level decisions to Serena Memory when needed.
 
-# Quick Checklist
-- [ ] Objective clear, ≤4 targeted searches
-- [ ] Conflicts resolved, insights stored
-- [ ] Implementation matches findings
+## As `advisor` role
 
----
-Short research loops → high-signal facts → persist → apply fast.
+- Purpose: Research/error-investigation role triggered by external requests (users or other agents).
+- Responsibilities:
+	- Run short Google web searches (`gemini -p`) to investigate bugs, errors, or technical questions.
+	- Extract 3–5 high-signal facts and provide concise actionable advice.
+	- Do not execute code changes; recommend steps or hand off to `agent` for implementation.

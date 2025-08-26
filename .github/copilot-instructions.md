@@ -3,20 +3,6 @@
 - To maximize efficiency, **if you need to execute multiple independent processes, invoke those tools concurrently, not sequentially**.
 - **You must think exclusively in English**. However, you are required to **respond in Japanese**.
 
-# Agent Command Execution Rule
-
-- Always `cd` to the project root before running commands to ensure correct context.
-
-**Example:**
-
-```bash
-cd [project-root] && [command]
-```
-
-# Programming Rules
-
-- Avoid hard-coding values unless absolutely necessary.
-
 # 📝 Git Commit Guidelines
 
 ## Commit Scope
@@ -62,7 +48,7 @@ When completing tasks, provide concise summaries:
 - Brief bullet point of key changes
 - Focus on functional outcomes, not technical details
 
-## Testing Guidelines
+# Testing Guidelines
 
 ## Test for runtime/worker
 

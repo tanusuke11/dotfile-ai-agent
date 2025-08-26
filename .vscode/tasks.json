@@ -6,11 +6,11 @@
       "type": "shell",
       "command": "${workspaceFolder}/.vscode/tasks/on_workspace_init.sh",
       "problemMatcher": [],
-      "runOptions": {
-        "runOn": "folderOpen"
-      },
       "presentation": {
         "close": true
+      },
+      "runOptions": {
+        "runOn": "folderOpen"
       }
     }
   ]
