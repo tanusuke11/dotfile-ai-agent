@@ -4,18 +4,41 @@
 
 ## 含まれるファイル・ディレクトリ
 
+`manifest.json` で管理される同期対象ファイル：
+
+- `.vscode/` - VS Code 設定
 - `.claude/` - Claude Code の設定ファイル
 - `.gemini/` - Gemini CLI の設定ファイル
-- `.github/` - GitHub 関連の設定
-- `.vscode/` - VS Code 設定
-- `.aiexclude` - Gemini CLI から除外するファイル・ディレクトリ
+- `.codex/` - Codex CLI の設定ファイル
 - `.copilotignore` - GitHub Copilot から除外するファイル・ディレクトリ
+- `.aiexclude` - Gemini CLI ツールから除外するファイル・ディレクトリ
 
 ## 使用方法
 
-> [just](https://github.com/casey/just) でのスクリプト管理例
+### 1. Git Sub Module の 追加
 
-### 1. justfile の設定
+```bash
+git submodule add https://github.com/tanusuke11/dotfile-ai-agent .dotfile-ai-agent
+git submodule update --init --recursive
+```
+
+### 2. 初期設定
+
+1. 各プロジェクトの `.gitignore` に以下を追加してください：
+
+```gitignore
+# AI Agent configs (managed by submodule)
+.vscode
+.claude
+.gemini
+.codex
+.copilotignore
+.aiexclude
+```
+
+2. スクリプトの設定
+
+> [just](https://github.com/casey/just) でのスクリプト管理例
 
 各プロジェクトのルートディレクトリの `justfile` に以下の import 文を追加
 
@@ -29,17 +52,17 @@ import 'scripts/dotfile.just'
 # AI Agent Configuration Management
 # Call scripts from .dotfile-ai-agent/scripts directory
 
-# Pull configuration updates
+# Pull configuration updates from remote and copy to project root
 dotfile-pull:
     chmod +x .dotfile-ai-agent/scripts/pull.sh
     .dotfile-ai-agent/scripts/pull.sh
 
-# Push configuration changes
-dotfile-push message="Update AIs agent configuration":
+# Copy project settings to submodule and push changes to remote
+dotfile-push:
     chmod +x .dotfile-ai-agent/scripts/push.sh
-    .dotfile-ai-agent/scripts/push.sh "{{message}}"
+    .dotfile-ai-agent/scripts/push.sh
 
-# Sync configuration with conflict resolution
+# Sync submodules only (local sync, no file copying)
 dotfile-sync:
     chmod +x .dotfile-ai-agent/scripts/sync.sh
     .dotfile-ai-agent/scripts/sync.sh
@@ -55,70 +78,52 @@ dotfile-dependency:
     .dotfile-ai-agent/scripts/dependency.sh
 ```
 
-### 2. 初回設定
-
-1. 各プロジェクトの `.gitignore` に以下を追加してください：
-
-```gitignore
-# AI Agent configs (managed by submodule)
-.dotfile-ai-agent
-.claude
-.gemini
-.github
-.vscode
-.aiexclude
-.copilotignore
-```
-
-2．プロジェクトディレクトリで以下を実行
-
-```bash
-just dotfile-init
-```
-
 ### 3. 操作例
 
 ```bash
-# 最新の設定を取得
+# 最新の設定を取得してプロジェクトルートにコピー
 just dotfile-pull
 
-# 設定ファイルを編集後、変更をプッシュ
-just dotfile-push "Update Claude model settings"
+# プロジェクトルートの設定をsubmoduleにコピーしてリモートにプッシュ
+just dotfile-push
 
-# 状態確認
-just dotfile-status
+# submodule間の同期のみ（ファイルコピーなし）
+just dotfile-sync
 
-# 差分確認
-just dotfile-diff
+# submodule管理ファイルの追加
+just dotfile-add
 ```
 
-## カスタマイズ
+## 動作フロー
 
-### 設定ファイルの追加・削除
+### pull.sh
 
-管理対象ファイルを変更したい場合は、`config_files` 変数を編集してください：
+1. submodule の更新 (`git submodule update --init --recursive`)
+2. 各 submodule で fetch & merge
+3. `manifest.json`に定義されたファイルを`.dotfile-ai-agent/`からプロジェクトルートにコピー
 
-```justfile
-# 管理対象ファイル・ディレクトリ（スペース区切り）
-config_files := ".claude .gemini .github .vscode .aiexclude .copilotignore .my-custom-config"
-```
+### push.sh
 
-## トラブルシューティング
+1. `manifest.json`に定義されたファイルをプロジェクトルートから`.dotfile-ai-agent/`にコピー
+2. 各 submodule で変更をコミット & プッシュ
 
-### シンボリックリンクが作成されない場合
+### sync.sh
 
-```bash
-just _create-symlinks
-```
+- 各 submodule で fetch & merge のみ（純粋なローカル同期）
 
-### 設定をリセットしたい場合
+## manifest.json
 
-```bash
-just dotfile-reset
-```
+同期対象のファイル・ディレクトリを定義：
 
-### 完全にクリーンアップしたい場合
-
-```bash
-just dotfile-clean
+```json
+{
+  "files": [
+    ".vscode/**",
+    ".claude/**",
+    ".gemini/**",
+    ".codex/**",
+    ".copilotignore",
+    ".aiexclude"
+  ]
+}
 ```
