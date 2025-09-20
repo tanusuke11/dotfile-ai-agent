@@ -4,6 +4,7 @@
     ".claude/**",
     ".gemini/**",
     ".codex/**",
+    ".github/**",
     ".copilotignore",
     ".aiexclude"
   ]
