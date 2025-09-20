@@ -1,6 +1,6 @@
 # Top-Level Rules
 - **Think internally in English;** all assistant responses (to user) are in Japanese (system constraint)
-- Use Serena MCP for all code/project operations
+- **Use Serena MCP for all code/project operations**
 
 # Workflow
 
@@ -12,6 +12,11 @@
 	- Implement low-to-medium risk changes when explicitly authorized.
 	- Run or produce tests and validate results.
 	- Persist architecture-level decisions to Serena Memory when needed.
+
+### Programming Rules
+- **Do not embed standard output code (such as console.log, println!) except in error handling or test code;** all other standard output code is strictly prohibited and must be removed before production or delivery.
+Test stubs, dummy data, or simulated responses may be included in intermediate deliverables during Claude Code session testing, but **never leave any modk, placeholder, fake, or synthetic data in the final deliverable. Remove all such test artifacts before completion. In particular, fallback to non-production data is strictly prohibited.**
+ - Remove old or obsolete functions when modifying or refactoring code; do not keep them for backward compatibility unless explicitly requested.
 
 ## As `advisor` role
 

@@ -14,12 +14,13 @@ if [ -f "$MANIFEST_FILE" ]; then
     
     if [ -e "$source_path" ]; then
       echo "  Copying $file..."
-      mkdir -p "$target_path"
-      if [ -d "$source_path" ]; then
-        cp -r "$source_path"/* "$target_path"/
-      else
-        cp -r "$source_path" "$target_path"
-      fi
+        if [ -d "$source_path" ]; then
+          mkdir -p "$target_path"
+          cp -r "$source_path"/* "$target_path"/
+        elif [ -f "$source_path" ]; then
+          mkdir -p "$(dirname "$target_path")"
+          cp "$source_path" "$target_path"
+        fi
     else
       echo "  Warning: $source_path not found, skipping..."
     fi
